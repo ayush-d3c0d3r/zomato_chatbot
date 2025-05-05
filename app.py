@@ -5,9 +5,30 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from transformers import pipeline
 import torch
+import os
+import gdown
+import zipfile
 
 st.set_page_config(page_title="🍽️ Zomato Restaurant Chatbot", layout="wide")
 
+# Google Drive file ID and names
+ZIP_FILE_ID = "1cTIdyYhkSBGvk5TSqWiBOiORakFDWpzV"  # Corrected file ID
+ZIP_FILE_NAME = "zomato_bot_package.zip"
+EXTRACT_PATH = "zomato_bot_package"
+
+# Download and extract ZIP if not already done
+if not os.path.exists(EXTRACT_PATH):
+    st.write("Downloading model/data zip from Google Drive...")
+    gdown.download(f"https://drive.google.com/uc?id={ZIP_FILE_ID}", ZIP_FILE_NAME, quiet=False)
+
+    st.write("Extracting zip...")
+    with zipfile.ZipFile(ZIP_FILE_NAME, 'r') as zip_ref:
+        zip_ref.extractall(EXTRACT_PATH)
+
+    st.write("Cleaning up...")
+    os.remove(ZIP_FILE_NAME)
+
+# Define the path for the resources
 DATA_PATH = 'zomato_bot_package'
 
 @st.cache_resource
@@ -86,4 +107,3 @@ if query:
 
         st.success("Scroll above to view recommended restaurants 👆")
         st.markdown("Craving something else? Ask me again!")
-
