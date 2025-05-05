@@ -1,3 +1,5 @@
 zomato_bot_package/
-
+*.faiss
+*.safetensors
+*.csv
 *.zip
